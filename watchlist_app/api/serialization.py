@@ -4,9 +4,9 @@ from watchlist_app.models import Movie
 
 class MovieSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField(max_length=50)
-    description = serializers.CharField(max_length=200)
-    active = serializers.BooleanField(default=True)
+    name = serializers.CharField()
+    description = serializers.CharField()
+    active = serializers.BooleanField()
 
     def create(self, validated_data):
         return Movie.objects.create(**validated_data)
@@ -17,3 +17,15 @@ class MovieSerializer(serializers.Serializer):
         instance.description = instance.validated_data.get('active', instance.active)
         instance.save()
         return instance
+
+    def validate_name(self, value):
+        """
+        Check that the Name is too short.
+        """
+        if len(value) < 2:
+            raise serializers.ValidationError("Name is too short !")
+        return value
+
+
+
+
