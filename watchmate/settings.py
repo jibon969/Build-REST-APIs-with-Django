@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'watchlist_app.apps.WatchlistAppConfig',
+    'movie_stream_app.apps.MovieStreamAppConfig',
+    'home.apps.HomeConfig',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
