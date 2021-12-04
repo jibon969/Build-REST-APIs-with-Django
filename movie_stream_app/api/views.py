@@ -48,6 +48,46 @@ def watch_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# Class base view
+
+
+class WatchListAv(APIView):
+    def get(self, request):
+        queryset = WatchList.objects.all()
+        serializer = WatchListSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = WatchListSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WatchDetailAv(APIView):
+    def get(self, request, pk):
+        watch = WatchList.objects.get(pk=pk)
+        serializer = WatchListSerializer(watch)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        serializer = WatchListSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        watch = WatchList.objects.get(pk=pk)
+        watch.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
 
 
 
