@@ -86,8 +86,39 @@ class WatchDetailAv(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class StreamPlatformAv(APIView):
+    def get(self, request):
+        queryset = StreamPlatform.objects.all()
+        serializer = StreamPlatformSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = StreamPlatformSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class StreamPlatformDetailAv(APIView):
+    def get(self, request, pk):
+        strem = StreamPlatform.objects.get(pk=pk)
+        serializer = StreamPlatformSerializer(strem)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        serializer = StreamPlatformSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        st = StreamPlatform.objects.get(pk=pk)
+        st.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
