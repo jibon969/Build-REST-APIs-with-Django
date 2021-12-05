@@ -87,6 +87,7 @@ class WatchDetailAv(APIView):
 
 
 class StreamPlatformAv(APIView):
+
     def get(self, request):
         queryset = StreamPlatform.objects.all()
         serializer = StreamPlatformSerializer(queryset, many=True)
@@ -103,7 +104,10 @@ class StreamPlatformAv(APIView):
 
 class StreamPlatformDetailAv(APIView):
     def get(self, request, pk):
-        strem = StreamPlatform.objects.get(pk=pk)
+        try:
+            strem = StreamPlatform.objects.get(pk=pk)
+        except StreamPlatform.DoesNotExist:
+            return Response({'Errors': 'Stream Not Found'}, status=status.HTTP_404_NOT_FOUND)
         serializer = StreamPlatformSerializer(strem)
         return Response(serializer.data)
 
@@ -119,6 +123,7 @@ class StreamPlatformDetailAv(APIView):
         st = StreamPlatform.objects.get(pk=pk)
         st.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 
